@@ -1,0 +1,64 @@
+<% layout("/layouts/boilerplate") %>
+  <h3 class="heading">Explore Listings</h3>
+  
+<div id="filters">
+    <% for(cat of CATEGORIES){ %>
+      <a href="/listings?category=<%= cat.name %>" 
+        class="filter <%= selectedCategory === cat.name ? 'active' : '' %>">
+        <div>
+          <i class="<%= cat.icon %>" style="color:<%=cat.color%>"></i>
+          <p><%= cat.name %></p>
+        </div>
+      </a>
+    <% } %>
+
+    <!-- Tax Toggle -->
+    <div class="txt-toggle border px-2 py-1">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input"
+                   type="checkbox"
+                   role="switch"
+                   id="switchCheckDefault">
+
+            <label class="form-check-label"
+                   for="switchCheckDefault">
+                Display total after Taxes
+            </label>
+        </div>
+    </div>
+</div>
+
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+    <% for(let listing of allListings) { %>
+      <a href="/listings/<%= listing._id %>" class="listing-link">
+        <div class="card listing-card">
+
+          <img src="<%= listing.image.url %>" alt="listing_image">
+
+          <div class="card-body">
+            <h5><%= listing.title %></h5>
+
+            <p class="location">
+              <%= listing.location %>, <%= listing.country %>
+            </p>
+
+            <p class="price">
+              <span class="base-price">
+                ₹ <%= listing.price?.toLocaleString("en-IN") %> / night
+              </span>
+
+              <span class="total-price d-none">
+                ₹ <%= Math.round(listing.price * 1.18).toLocaleString("en-IN") %> / night
+              </span>
+
+              <span class="tax-info d-none ms-1 text-muted fs-7" style="font-style: normal;">
+                (incl. 18% GST)
+              </span>
+            </p>
+            
+          </div>
+
+        </div>
+      </a>
+    <% } %>
+  </div>

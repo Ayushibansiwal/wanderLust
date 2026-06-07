@@ -1,0 +1,84 @@
+<% layout("/layouts/boilerplate") %>
+
+  <div class="row py-3">
+    <div class="col-8 offset-2">
+      <h3>Edit your Listing</h3>
+
+      <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate
+        enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label section-title">Title</label>
+          <input type="text" name="listing[title]" value="<%= listing.title %>" class="form-control" required />
+          <div class="invalid-feedback">Please provide a valid title.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label section-title">Description</label>
+          <textarea name="listing[description]" rows="4" class="form-control" required><%= listing.description %></textarea>
+          <div class="invalid-feedback">Please provide a description.</div>
+        </div>
+
+        <!-- Image Preview -->
+        <div class="mb-3">
+          <p class="section-title">Current Photo</p>
+          <img src="<%= originalImageURL %>" alt="listing_image" class="preview-img" />
+        </div>
+
+        <!-- Upload -->
+        <div class="mb-3">
+          <label class="form-label section-title"> Upload New Image </label>
+          <input type="file" name="listing[image]" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Select Categories for your Listing</label>
+
+          <div class="d-flex flex-wrap gap-3">
+
+            <% CATEGORIES.forEach(cat => { %>
+              <div class="form-check">
+
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="listing[categories]"
+                  value="<%= cat.name %>"
+                  id="<%= cat.name %>"
+                  <%= (listing.categories || []).includes(cat.name) ? "checked" : "" %>
+                >
+
+                <label class="form-check-label" for="<%= cat.name %>">
+                  <i class="<%= cat.icon %>"></i>
+                  <%= cat.name %>
+                </label>
+
+              </div>
+            <% }) %>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label section-title">Price</label>
+            <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control" required />
+            <div class="invalid-feedback">Please provide a valid price.</div>
+          </div>
+
+          <div class="col-md-8 mb-3">
+            <label class="form-label section-title">Country</label>
+            <input type="text" name="listing[country]" value="<%= listing.country %>" class="form-control" required />
+            <div class="invalid-feedback">Please provide a country.</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label section-title">Location</label>
+          <input type="text" name="listing[location]" value="<%= listing.location %>" class="form-control" required />
+          <div class="invalid-feedback">Please provide a valid location.</div>
+        </div>
+
+        <button class="save-btn">Save Changes</button>
+      </form>
+    </div>
+  </div>
